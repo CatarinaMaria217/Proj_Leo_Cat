@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <title>Autodesk Viewer - Load Model</title>
+  <link rel="stylesheet" href="viewer.css">
+
+  <!-- Autodesk Viewer scripts -->
+  <script src="https://developer.api.autodesk.com/modelderivative/v2/viewers/7.*/viewer3D.js"></script>
+  <link rel="stylesheet" href="https://developer.api.autodesk.com/modelderivative/v2/viewers/7.*/style.min.css" />
+</head>
+<body>
+  <div id="controls">
+    <input type="text" id="modelUrn" placeholder="Cole aqui o Version URN" />
+    <button id="loadModelBtn">Load Model</button>
+  </div>
+
+  <div id="viewerContainer"></div>
+
+  <script src="viewer.js"></script>
+</body>
+</html>
