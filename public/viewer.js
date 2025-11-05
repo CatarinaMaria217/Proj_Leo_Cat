@@ -3,7 +3,6 @@
 // 1️⃣ Declare global variables
 let viewer;
 let accessToken;
-let urn; // you can set this later or fetch from backend/user input
 
 // 2️⃣ Initialize Forge Viewer
 async function initializeViewer() {
@@ -37,21 +36,32 @@ async function initializeViewer() {
 
 // 3️⃣ Load model into viewer
 async function loadModel() {
+  const input = document.getElementById('modelUrn');
+  if (!input || !input.value) {
+    console.error("Please enter a model URN in the input field.");
+    return;
+  }
+
+  const urn = input.value.trim();
+
   if (!viewer || !accessToken || !urn) {
     console.error("Viewer, accessToken, or URN is missing!");
     return;
   }
 
-  const documentId = `urn:${urn}`;
+  // Base64 encode and make URL-safe
+  const encoUrn = btoa(urn).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+  const documentId = `urn:${encoUrn}`;
+
   Autodesk.Viewing.Document.load(
     documentId,
     (doc) => {
       const defaultModel = doc.getRoot().getDefaultGeometry();
       viewer.loadDocumentNode(doc, defaultModel);
-      console.log('Model loaded.');
+      console.log('Model loaded successfully.');
     },
     (error) => {
-      console.error('Error loading model:', error);
+      console.error('Failed to load model:', error);
     }
   );
 }
@@ -74,8 +84,14 @@ async function checkAuthStatus() {
   }
 }
 
-// 5️⃣ Hook events
-document.addEventListener('DOMContentLoaded', checkAuthStatus);
+// 5️⃣ Hook events after DOM is loaded
+document.addEventListener('DOMContentLoaded', () => {
+  checkAuthStatus();
 
-// Hook the "Load Model" button
-document.getElementById('loadModelBtn').addEventListener('click', loadModel);
+  const loadBtn = document.getElementById('loadModelBtn');
+  if (loadBtn) {
+    loadBtn.addEventListener('click', loadModel);
+  } else {
+    console.warn('Load Model button not found in the DOM.');
+  }
+});
