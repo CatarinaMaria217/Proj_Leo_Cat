@@ -1,5 +1,7 @@
 // viewer.js
 
+
+
 // 1️⃣ Declare global variables
 let viewer;
 let accessToken;
@@ -41,16 +43,21 @@ async function loadModel() {
     return;
   }
 
-  const urn = input.value.trim(); // ✅ Define urn first
+  const rawUrn = input.value.trim();
 
-  if (!viewer || !accessToken || !urn) {
+  if (!viewer || !accessToken || !rawUrn) {
     console.error("Viewer, accessToken, or URN is missing!");
     return;
   }
 
-  const encoUrn = btoa(urn).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
-  const documentId = `urn:${encoUrn}`;
-  
+  // 🔐 Encode the ACC URN for Forge Viewer
+  const encodedUrn = btoa(rawUrn)
+    .replace(/\+/g, '-')
+    .replace(/\//g, '_')
+    .replace(/=+$/, '');
+
+  const documentId = `urn:${encodedUrn}`;
+
   Autodesk.Viewing.Document.load(
     documentId,
     (doc) => {
@@ -63,6 +70,7 @@ async function loadModel() {
     }
   );
 }
+
 
 // 4️⃣ Check authentication status and initialize viewer
 async function checkAuthStatus() {
