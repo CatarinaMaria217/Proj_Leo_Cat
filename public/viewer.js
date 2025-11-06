@@ -34,7 +34,6 @@ async function initializeViewer() {
   }
 }
 
-// 3️⃣ Load model into viewer
 async function loadModel() {
   const input = document.getElementById('modelUrn');
   if (!input || !input.value) {
@@ -42,17 +41,16 @@ async function loadModel() {
     return;
   }
 
-  const urn = input.value.trim();
+  const urn = input.value.trim(); // ✅ Define urn first
 
   if (!viewer || !accessToken || !urn) {
     console.error("Viewer, accessToken, or URN is missing!");
     return;
   }
 
-  // Base64 encode and make URL-safe
   const encoUrn = btoa(urn).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
   const documentId = `urn:${encoUrn}`;
-
+  
   Autodesk.Viewing.Document.load(
     documentId,
     (doc) => {
