@@ -24,8 +24,10 @@ app.use(logger);
 
 // Rotas do seu app.js original
 app.get('/', (req, res) => {
-    res.send('Hello World!');
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
+
+app.use(express.static('public'));
 
 app.get('/health', (req, res) => {
     res.json({ status: 'active', timestamp: new Date().toISOString() });
@@ -92,6 +94,9 @@ app.get('/auth/token', async (req, res) => {
 app.get('/hubs', (req, res) => {
   res.status(200).send();
 });
+
+
+
 
 
 // --- Montagem das Rotas Específicas ---

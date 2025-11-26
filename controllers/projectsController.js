@@ -1,7 +1,6 @@
 
 exports.getProjects = async (req, res) => {
   const { hub_id } = req.params;
-
   try {
     const tokenResponse = await fetch(process.env.FORGE_AUTH_URL, {
       method: 'POST',
@@ -10,7 +9,7 @@ exports.getProjects = async (req, res) => {
         client_id: process.env.FORGE_CLIENT_ID,
         client_secret: process.env.FORGE_CLIENT_SECRET,
         grant_type: 'client_credentials',
-        scope: 'data:read'
+        scope: 'data:read account:read'
       })
     });
 
@@ -23,6 +22,7 @@ exports.getProjects = async (req, res) => {
 
     const projects = await projectsResponse.json();
     res.json(projects);
+
   } catch (error) {
     console.error('Erro ao buscar projetos:', error);
     res.status(500).json({ error: 'Erro ao buscar projetos' });
