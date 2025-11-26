@@ -24,7 +24,7 @@ app.use(logger);
 
 // Rotas do seu app.js original
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'index.html'));
+    res.sendFile(path.join(__dirname, 'public', 'indexMateriais.html'));
 });
 
 app.use(express.static('public'));

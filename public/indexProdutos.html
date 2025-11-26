@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Produtos / Materiais - Profissional</title>
+  <style>
+    /* Reset básico */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: "Segoe UI", Arial, sans-serif;
+    }
+
+    body {
+      background-color: #F4F6F7; /* Fundo empresarial claro */
+      color: #2C3E50;
+    }
+
+    /* Navbar */
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+      background-color: #2C3E50; /* Azul escuro empresarial */
+      box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+      color: white;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    .navbar .brand {
+      font-weight: bold;
+      font-size: 1.25rem;
+      color: white;
+    }
+
+    .navbar ul {
+      display: flex;
+      gap: 1.5rem;
+      list-style: none;
+    }
+
+    .navbar a {
+      text-decoration: none;
+      color: #ECF0F1;
+      font-weight: 500;
+      transition: opacity 0.2s;
+    }
+
+    .navbar a:hover {
+      opacity: 0.7;
+    }
+
+    /* Container principal */
+    .container {
+      max-width: 1200px;
+      margin: 2rem auto;
+      padding: 0 1rem;
+    }
+
+    /* Toggle de view */
+    .toggle-btn {
+      margin-bottom: 1.5rem;
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .toggle-btn button {
+      padding: 0.5rem 1rem;
+      border: 1px solid #2980B9;
+      background-color: white;
+      color: #2980B9;
+      cursor: pointer;
+      border-radius: 0.3rem;
+      transition: all 0.2s;
+      font-weight: 600;
+    }
+
+    .toggle-btn button.active {
+      background-color: #2980B9; /* Azul corporativo */
+      color: white;
+    }
+
+    /* Grid de ícones */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 1rem;
+    }
+
+    .card {
+      background-color: #FFFFFF;
+      border: 1px solid #D5D8DC;
+      border-radius: 0.5rem;
+      padding: 1rem;
+      text-align: center;
+      transition: transform 0.15s, box-shadow 0.15s;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    }
+
+    .card img {
+      width: 80px;
+      height: 80px;
+      margin-bottom: 0.5rem;
+      object-fit: cover;
+    }
+
+    /* Tabela */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background-color: #FFFFFF;
+      border-radius: 0.5rem;
+      overflow: hidden;
+    }
+
+    table th {
+      background-color: #2980B9;
+      color: white;
+      padding: 0.75rem 1rem;
+      text-align: left;
+      font-weight: 600;
+    }
+
+    table td {
+      padding: 0.75rem 1rem;
+      text-align: left;
+      color: #2C3E50;
+    }
+
+    table tr:nth-child(even) {
+      background-color: #F2F4F4;
+    }
+
+    table tr:hover {
+      background-color: #E8F6F3;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="brand">BIMatrix</div>
+    <ul>
+      <li><a href="indexMateriais.html">Materiais</a></li>
+      <li><a href="indexProdutos.html" style="color: #2980B9;"> <strong></strong>Produtos</strong></a></li>
+      <li><a href="#">Nome, Empresa</a></li>
+    </ul>
+  </nav>
+
+  <!-- Conteúdo -->
+  <div class="container">
+
+    <!-- Toggle -->
+    <div class="toggle-btn">
+      <button id="gridBtn" class="active">Grid</button>
+      <button id="tableBtn">Tabela</button>
+    </div>
+
+    <!-- Grid -->
+    <div id="gridView" class="grid">
+      <div class="card">
+        <img src="https://via.placeholder.com/80" alt="Produto 1">
+        <h4>Produto 1</h4>
+        <p>Empresa A</p>
+      </div>
+      <div class="card">
+        <img src="https://via.placeholder.com/80" alt="Produto 2">
+        <h4>Produto 2</h4>
+        <p>Empresa B</p>
+      </div>
+    </div>
+
+    <!-- Tabela -->
+    <div id="tableView" style="display:none;">
+      <table>
+        <thead>
+          <tr>
+            <th>Produto</th>
+            <th>Nome</th>
+            <th>Empresa</th>
+            <th>Categoria</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Produto 1</td>
+            <td>Nome 1</td>
+            <td>Empresa A</td>
+            <td>Matéria X</td>
+          </tr>
+          <tr>
+            <td>Produto 2</td>
+            <td>Nome 2</td>
+            <td>Empresa B</td>
+            <td>Matéria Y</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+
+  <script>
+    const gridBtn = document.getElementById('gridBtn');
+    const tableBtn = document.getElementById('tableBtn');
+    const gridView = document.getElementById('gridView');
+    const tableView = document.getElementById('tableView');
+
+    gridBtn.onclick = () => {
+      gridView.style.display = "grid";
+      tableView.style.display = "none";
+      gridBtn.classList.add("active");
+      tableBtn.classList.remove("active");
+    };
+
+    tableBtn.onclick = () => {
+      gridView.style.display = "none";
+      tableView.style.display = "block";
+      tableBtn.classList.add("active");
+      gridBtn.classList.remove("active");
+    };
+  </script>
+
+</body>
+</html>
