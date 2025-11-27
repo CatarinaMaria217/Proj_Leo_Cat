@@ -1,5 +1,6 @@
 exports.getProjectContents = async (req, res) => {
-  const { project_id } = req.params;
+  console.log(req.params)
+  const { hub_id, project_id } = req.params;
 
   try {
     const tokenResponse = await fetch(process.env.FORGE_AUTH_URL, {
@@ -16,11 +17,12 @@ exports.getProjectContents = async (req, res) => {
     const { access_token } = await tokenResponse.json();
 
     const contentsResponse = await fetch(
-      `https://developer.api.autodesk.com/data/v1/projects/${project_id}/folders/root`,
+      `https://developer.api.autodesk.com/project/v1/hubs/${hub_id}/projects/${project_id}/topFolders`,
       { headers: { Authorization: `Bearer ${access_token}` } }
     );
 
     const contents = await contentsResponse.json();
+    console.log(contents)
     res.json(contents);
   } catch (error) {
     console.error('Erro ao buscar conteúdos:', error);
