@@ -55,6 +55,51 @@
       opacity: 0.7;
     }
 
+    #sidebar {
+      position: fixed;
+      top: 0;
+      right: -350px; /* Hidden outside the screen */
+      width: 350px;
+      height: 100%;
+      background-color: #FFFFFF;
+      border-left: 1px solid #D5D8DC;
+      box-shadow: -4px 0 10px rgba(0,0,0,0.1);
+      transition: right 0.3s ease;
+      z-index: 2000;
+    }
+
+    #sidebar.open {
+      right: 0; /* Slides in */
+    }
+
+    .sidebar-content {
+      padding: 1.5rem;
+    }
+
+    #closeSidebar {
+      float: right;
+      font-size: 1.8rem;
+      cursor: pointer;
+      color: #2C3E50;
+    }
+
+    #closeSidebar:hover {
+      color: #2980B9;
+    }
+
+    #sidebar h2 {
+      margin-top: 0.5rem;
+      margin-bottom: 1rem;
+      color: #2C3E50;
+    }
+
+    #sidebarBody p {
+      font-size: 1rem;
+      margin-bottom: 0.7rem;
+      color: #34495E;
+    }
+
+
     /* Container principal */
     .container {
       max-width: 1200px;
@@ -143,6 +188,54 @@
     table tr:hover {
       background-color: #E8F6F3;
     }
+
+    .toggle-btn2 button {
+      padding: 0.5rem 1rem;
+      border: 1px solid #e285a7;
+      background-color: white;
+      color: #e285a7;
+      cursor: pointer;
+      border-radius: 0.3rem;
+      transition: all 0.2s;
+      font-weight: 600;
+    }
+
+    .toggle-btn2 button.active {
+      background-color: #e285a7;
+      color: white;
+    }
+
+    /* Optional: Add hover effect */
+    .toggle-btn2 button:hover {
+      background-color: #e285a7;
+      color: white;
+  }
+
+    .toggle-btn2 {
+      margin-left: 2rem; /* space between Tabela and Add Product */
+    }
+
+      .toggle-btn3 button {
+      padding: 0.5rem 1rem;
+      border: 1px solid #ff5b5b;
+      background-color: white;
+      color: #ff5b5b;
+      cursor: pointer;
+      border-radius: 0.3rem;
+      transition: all 0.2s;
+      font-weight: 600;
+    }
+
+    .toggle-btn3 button.active {
+      background-color: #ff5b5b;
+      color: white;
+    }
+
+    /* Optional: Add hover effect */
+    .toggle-btn3 button:hover {
+      background-color: #ff5b5b;
+      color: white;
+  }
   </style>
 </head>
 <body>
@@ -153,17 +246,38 @@
     <ul>
       <li><a href="indexMateriais.html" style="color: #2980B9;"> <strong>Materiais</strong></a></li>
       <li><a href="indexProdutos.html">Produtos</a></li>
-      <li><a href="#">Nome, Empresa</a></li>
+      <li><a href="#" id="showNameSidebar">Nome, Empresa</a></li>
     </ul>
   </nav>
+
+  <div id="sidebar">
+    <div class="sidebar-content">
+      <span id="closeSidebar">&times;</span>
+
+      <h2 id="sidebarTitle">Perfil</h2>
+
+      <div id="sidebarBody">
+        <!-- Content will change automatically -->
+      </div>
+    </div>
+  </div>
+
 
   <!-- Conteúdo -->
   <div class="container">
 
     <!-- Toggle -->
-    <div class="toggle-btn">
+        <div class="toggle-btn">
       <button id="gridBtn" class="active">Grid</button>
       <button id="tableBtn">Tabela</button>
+      <div class="toggle-btn2">
+        <a href="addMaterial.html">
+          <button id="addMaterialBtn">Add Material</button>
+        </a>
+      </div>
+      <div class="toggle-btn3">
+      <button id="deleteProductBtn">Delete</button>
+      </div>
     </div>
 
     <!-- Grid -->
@@ -229,6 +343,24 @@
       tableBtn.classList.add("active");
       gridBtn.classList.remove("active");
     };
+
+    const sidebar = document.getElementById("sidebar");
+    const sidebarTitle = document.getElementById("sidebarTitle");
+    const sidebarBody = document.getElementById("sidebarBody");
+
+    document.getElementById("showNameSidebar").addEventListener("click", () => {
+      sidebarTitle.textContent = "Perfil";
+      sidebarBody.innerHTML = `
+        <p><strong>Nome:</strong> João Silva</p>
+        <p><strong>Cargo:</strong> Gestor</p>
+        <p><strong>Email:</strong> joao@empresa.com</p>
+      `;
+      sidebar.classList.add("open");
+    });
+
+    document.getElementById("closeSidebar").addEventListener("click", () => {
+      sidebar.classList.remove("open");
+    });
   </script>
 
 </body>
