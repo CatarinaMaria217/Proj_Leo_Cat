@@ -30,6 +30,13 @@ async function initializeViewer() {
         return;
       }
 
+      viewer.resize(); // make sure viewer fits its container
+
+      // Optional: handle window resize
+      window.addEventListener('resize', () => {
+        if (viewer) viewer.resize();
+      });
+
       console.log('Viewer iniciado.');
     });
   } catch (error) {
