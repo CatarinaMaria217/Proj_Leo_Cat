@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Produtos / Materiais - Profissional</title>
+    <script src="https://developer.api.autodesk.com/modelderivative/v2/viewers/7.96/viewer3D.js"></script>
+    <link rel="stylesheet" href="https://developer.api.autodesk.com/modelderivative/v2/viewers/7.96/style.css" />
+  <style>
+
+    /* 2-column layout: left content + Autodesk Viewer */
+    .split-layout {
+    display: flex;
+    height: calc(100vh - 70px); /* full height minus navbar */
+    width: 100%;
+    overflow: hidden;  
+    }
+
+    /* Left side (your product/material UI) */
+    .left-panel {
+    width: 50%;
+    padding: 1rem;
+    overflow-y: auto;
+    }
+
+    /* Right side (Autodesk Viewer) */
+    .right-panel {
+    width: 50%;
+    border-left: 2px solid #D5D8DC;
+    padding: 0;
+    overflow-y: hidden;
+    position: relative;
+    }
+
+    .viewerContainer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100% !important;
+    height: calc(100vh - 70px);
+    bottom: 0;
+    }
+
+    /* Reset básico */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: "Segoe UI", Arial, sans-serif;
+    }
+
+    body {
+      background-color: #F4F6F7; /* Fundo empresarial claro */
+      color: #2C3E50;
+    }
+
+    /* Navbar */
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+      background-color: #2C3E50; /* Azul escuro empresarial */
+      box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+      color: white;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    .navbar .brand {
+      font-weight: bold;
+      font-size: 1.25rem;
+      color: white;
+    }
+
+    .navbar ul {
+      display: flex;
+      gap: 1.5rem;
+      list-style: none;
+    }
+
+    .navbar a {
+      text-decoration: none;
+      color: #ECF0F1;
+      font-weight: 500;
+      transition: opacity 0.2s;
+    }
+
+    .navbar a:hover {
+      opacity: 0.7;
+    }
+
+    #sidebar {
+      position: fixed;
+      top: 0;
+      right: -350px; /* Hidden outside the screen */
+      width: 350px;
+      height: 100%;
+      background-color: #FFFFFF;
+      border-left: 1px solid #D5D8DC;
+      box-shadow: -4px 0 10px rgba(0,0,0,0.1);
+      transition: right 0.3s ease;
+      z-index: 2000;
+    }
+
+    #sidebar.open {
+      right: 0; /* Slides in */
+    }
+
+    .sidebar-content {
+      padding: 1.5rem;
+    }
+
+    #closeSidebar {
+      float: right;
+      font-size: 1.8rem;
+      cursor: pointer;
+      color: #2C3E50;
+    }
+
+    #closeSidebar:hover {
+      color: #2980B9;
+    }
+
+    #sidebar h2 {
+      margin-top: 0.5rem;
+      margin-bottom: 1rem;
+      color: #2C3E50;
+    }
+
+    #sidebarBody p {
+      font-size: 1rem;
+      margin-bottom: 0.7rem;
+      color: #34495E;
+    }
+
+    /* Container principal */
+    .container {
+      max-width: 1200px;
+      margin: 2rem auto;
+      padding: 0 1rem;
+    }
+
+      </style>
+</head>
+<body>
+
+<!-- Navbar -->
+  <nav class="navbar">
+    <div class="brand">BIMatrix</div>
+    <ul>
+      <li><a href="indexMateriais.html">Materiais</a></li>
+      <li><a href="indexProdutos.html" style="color: #2980B9;"></strong>Produtos</strong></a></li>
+      <li><a href="#" id="showNameSidebar">Nome, Empresa</a></li>
+    </ul>
+  </nav>
+
+  <!-- SideBar -->
+  <div id="sidebar">
+    <div class="sidebar-content">
+      <span id="closeSidebar">&times;</span>
+
+      <h2 id="sidebarTitle">Perfil</h2>
+
+      <div id="sidebarBody">
+        <!-- Content will change automatically -->
+      </div>
+    </div>
+  </div>
+
+  <div class="split-layout">
+
+    <div class="left-panel">
+    <!-- Conteúdo -->
+    <div class="container">
+        <iframe class="airtable-embed" 
+        src="https://airtable.com/embed/appE4Opk24OpOIfQy/shr3TFXFsd8x5FjyM" 
+        frameborder="0" 
+        onmousewheel="" width="100%" 
+        height="533" 
+        style="background: transparent; border: 1px solid #ccc;">
+        </iframe>
+    </div>
+    </div>
+
+    <div class="right-panel">
+    <div id="controls">
+        <input type="text" id="modelUrn" placeholder="Cole aqui o Version URN" />
+        <button id="loadModelBtn">Load Model</button>
+    </div>
+
+    <div id="viewerContainer"></div>
+    <link rel="stylesheet" href="viewer.css">
+    <script src="viewer.js"></script>
+    </div>
+</body>
+</html>
+
+
+</body>
+</html>

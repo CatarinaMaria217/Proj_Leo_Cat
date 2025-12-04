@@ -23,6 +23,7 @@ async function initializeViewer() {
       const htmlDiv = document.getElementById('viewerContainer');
       viewer = new Autodesk.Viewing.GuiViewer3D(htmlDiv);
       const startedCode = viewer.start();
+      
 
       if (startedCode > 0) {
         console.error('Falha ao iniciar o viewer: ' + startedCode);

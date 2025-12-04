@@ -83,7 +83,7 @@ app.get('/auth/token', async (req, res) => {
     });
 
 app.get("/api/tasks", async (req, res) => {
-  const response = await fetch("https://api.airtable.com/v0/apppkJ8c93NNqpk1y/tbldDeD7OjoJWPELK", {
+  const response = await fetch("https://api.airtable.com/v0/appE4Opk24OpOIfQy/tbl8RHXKsZ2OGcn3f", {
     headers: {
       Authorization: `Bearer ${process.env.AIRTABLE_TOKEN}`
     }
@@ -98,7 +98,7 @@ app.post("/api/update", async (req, res) => {
   const { recordId, fields } = req.body;
   try {
     const response = await fetch(
-      `https://api.airtable.com/v0/apppkJ8c93NNqpk1y/tbldDeD7OjoJWPELK/${recordId}`,
+      `https://api.airtable.com/v0/appE4Opk24OpOIfQy/tbl8RHXKsZ2OGcn3f/${recordId}`,
       {
         method: "PATCH",
         headers: {
@@ -119,7 +119,7 @@ app.post("/api/add", async (req, res) => {
   const fields = req.body; // we accept a dynamic object
   try {
     const response = await fetch(
-      `https://api.airtable.com/v0/apppkJ8c93NNqpk1y/tbldDeD7OjoJWPELK`,
+      `https://api.airtable.com/v0/appE4Opk24OpOIfQy/tbl8RHXKsZ2OGcn3f`,
       {
         method: "POST",
         headers: {
@@ -140,7 +140,7 @@ app.post("/api/add", async (req, res) => {
 app.post("/api/edit", async (req, res) => {
   const { recordId, fields } = req.body;
   const response = await fetch(
-    `https://api.airtable.com/v0/apppkJ8c93NNqpk1y/tbldDeD7OjoJWPELK/${recordId}`,
+    `https://api.airtable.com/v0/appE4Opk24OpOIfQy/tbl8RHXKsZ2OGcn3f/${recordId}`,
     {
       method: "PATCH",
       headers: {
