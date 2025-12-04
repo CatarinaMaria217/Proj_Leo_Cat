@@ -114,6 +114,45 @@ app.post("/api/update", async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
+
+app.post("/api/add", async (req, res) => {
+  const fields = req.body; // we accept a dynamic object
+  try {
+    const response = await fetch(
+      `https://api.airtable.com/v0/apppkJ8c93NNqpk1y/tbldDeD7OjoJWPELK`,
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${process.env.AIRTABLE_TOKEN}`,
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ fields })
+      }
+    );
+    const data = await response.json();
+    res.json(data);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Update an existing record
+app.post("/api/edit", async (req, res) => {
+  const { recordId, fields } = req.body;
+  const response = await fetch(
+    `https://api.airtable.com/v0/apppkJ8c93NNqpk1y/tbldDeD7OjoJWPELK/${recordId}`,
+    {
+      method: "PATCH",
+      headers: {
+        Authorization: `Bearer ${process.env.AIRTABLE_TOKEN}`,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ fields })
+    }
+  );
+  const data = await response.json();
+  res.json(data);
+});
     
 
     const data = await response.json();
