@@ -92,36 +92,27 @@ app.get("/api/tasks", async (req, res) => {
   res.json(data);
 });
 
-// UPDATE A RECORD
+
+// Update a record
 app.post("/api/update", async (req, res) => {
   const { recordId, fields } = req.body;
-
-  const response = await fetch(
-    `https://api.airtable.com/v0/apppkJ8c93NNqpk1y/tbldDeD7OjoJWPELK/${recordId}`,
-    {
-      method: "PATCH",
-      headers: {
-        Authorization: `Bearer ${process.env.AIRTABLE_TOKEN}`,
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({ fields })
-    }
-  );
-
-  
-
-  const data = await response.json();
-  res.json(data);
-});
-
-
-await fetch("/api/update", {
-  method: "POST",
-  headers: { "Content-Type": "application/json" },
-  body: JSON.stringify({
-    recordId: "recABC123DEF",
-    fields: { Name: "New Name" }
-  })
+  try {
+    const response = await fetch(
+      `https://api.airtable.com/v0/apppkJ8c93NNqpk1y/tbldDeD7OjoJWPELK/${recordId}`,
+      {
+        method: "PATCH",
+        headers: {
+          Authorization: `Bearer ${process.env.AIRTABLE_TOKEN}`,
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ fields })
+      }
+    );
+    const data = await response.json();
+    res.json(data);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 });
     
 
