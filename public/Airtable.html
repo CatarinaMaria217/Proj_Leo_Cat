@@ -11,7 +11,6 @@
     /* 2-column layout: left content + Autodesk Viewer */
     .split-layout {
     display: flex;
-    height: calc(100vh - 70px); /* full height minus navbar */
     width: 100%;
     overflow: hidden;  
     }
@@ -21,6 +20,7 @@
     width: 50%;
     padding: 1rem;
     overflow-y: auto;
+    height: calc(100vh - 140px)
     }
 
     /* Right side (Autodesk Viewer) */
@@ -37,7 +37,6 @@
     top: 0;
     left: 0;
     width: 100% !important;
-    height: calc(100vh - 70px);
     bottom: 0;
     }
 
