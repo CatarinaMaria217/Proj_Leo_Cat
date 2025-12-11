@@ -164,63 +164,46 @@
       color: white;
     }
 
-    /* Grid de ícones */
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-      gap: 1rem;
-    }
-
-    .card {
-      background-color: #FFFFFF;
-      border: 1px solid #D5D8DC;
-      border-radius: 0.5rem;
-      padding: 1rem;
-      text-align: center;
-      transition: transform 0.15s, box-shadow 0.15s;
-    }
-
-    .card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-    }
-
-    .card img {
-      width: 80px;
-      height: 80px;
-      margin-bottom: 0.5rem;
-      object-fit: cover;
-    }
-
-    /* Tabela */
-    table {
+    /* Table styling */
+    #tableView {
       width: 100%;
       border-collapse: collapse;
-      background-color: #FFFFFF;
-      border-radius: 0.5rem;
-      overflow: hidden;
+      font-family: Arial, sans-serif;
     }
 
-    table th {
-      background-color: #2980B9;
-      color: white;
-      padding: 0.75rem 1rem;
+    #tableView th, #tableView td {
+      padding: 12px 15px;
       text-align: left;
-      font-weight: 600;
+      border-bottom: 1px solid #ddd;
     }
 
-    table td {
-      padding: 0.75rem 1rem;
-      text-align: left;
-      color: #2C3E50;
+    #tableView th {
+      background-color: #f4f4f4;
+      font-weight: bold;
     }
 
-    table tr:nth-child(even) {
-      background-color: #F2F4F4;
+    /* Actions column styling */
+    .actions-col {
+      text-align: center; /* center the delete button */
     }
 
-    table tr:hover {
-      background-color: #E8F6F3;
+    /* Delete button styling */
+    .delete-btn {
+      background-color: transparent; /* no background */
+      border: none; /* remove default border */
+      cursor: pointer;
+      font-size: 18px; /* icon size */
+      color: #e74c3c; /* red color */
+      transition: color 0.2s;
+    }
+
+    .delete-btn:hover {
+      color: #c0392b; /* darker red on hover */
+    }
+
+    /* Optional: hover effect on row */
+    #tableView tbody tr:hover {
+      background-color: #f9f9f9;
     }
 
     .toggle-btn2 button {
@@ -316,9 +299,9 @@
   <nav class="navbar">
     <div class="brand">BIMatrix</div>
     <ul>
-      <li><a href="Airtable.html">Materiais</a></li>
       <li><a href="Airtable2.html" style="color: #2980B9;"></strong>Produtos</strong></a></li>
       <li><a href="#" id="showNameSidebar">Nome, Empresa</a></li>
+            <li><a href="login.html">Sair</a></li>
     </ul>
   </nav>
 
@@ -342,7 +325,7 @@
       <div class="toggle-btn">
         <div class="toggle-btn2">
           <a href="addMaterial.html">
-            <button id="addMaterialBtn">Add Material</button>
+            <button id="addMaterialBtn">Add Product</button>
           </a>
         </div>
         <div class="toggle-btn3">
@@ -359,6 +342,7 @@
           <tr>
             <th>Name</th>
             <th>Email</th>
+            <th class="actions-col">Actions</th>
           </tr>
         </thead>
         <tbody></tbody>
@@ -367,7 +351,7 @@
 
     <div class="right-panel">
       <div id="controls">
-        <input type="text" id="modelUrn" placeholder="Cole aqui o Version URN" />
+        <input type="text" id="modelUrn" placeholder="URN" />
         <button id="loadModelBtn">Load Model</button>
       </div>
 
@@ -388,7 +372,11 @@
           tr.innerHTML = `
             <td>${record.fields.Name || ''}</td>
             <td>${record.fields.Email || ''}</td>
-          `;
+            <td>
+            <td class="actions-col">
+              <button class="delete-btn" onclick="deleteRow(this, '${record.id}')">🗑️</button>
+            </td>
+            `;
           tbody.appendChild(tr);
         });
       })
@@ -401,22 +389,44 @@
       const res = await fetch('/api/airtable');
       const data = await res.json();
       const tbody = document.querySelector('#tableView tbody');
-      tbody.innerHTML = ''; // limpa a tabela
+      tbody.innerHTML = ''; // clear table
 
       data.records.forEach(record => {
         const tr = document.createElement('tr');
         tr.innerHTML = `
           <td>${record.fields.Name || ''}</td>
           <td>${record.fields.Email || ''}</td>
+          <td>
+            <button class="delete-btn" data-id="${record.id}">🗑️</button>
+          </td>
         `;
         tbody.appendChild(tr);
       });
+
+      // Attach delete events
+      document.querySelectorAll('.delete-btn').forEach(btn => {
+        btn.addEventListener('click', async () => {
+          const id = btn.getAttribute('data-id');
+          if (!confirm("Tem certeza que deseja apagar este registro?")) return;
+
+          try {
+            await fetch(`/api/delete/${id}`, { method: 'DELETE' });
+            alert("Registro apagado!");
+            loadAirtable(); // reload table
+          } catch (err) {
+            console.error(err);
+            alert("Erro ao apagar.");
+          }
+        });
+      });
+
     } catch (err) {
       console.error(err);
     }
   }
 
-  loadAirtable(); // chama ao carregar a página
+  // Load table on page load
+  loadAirtable();
   </script>
 
   <script>

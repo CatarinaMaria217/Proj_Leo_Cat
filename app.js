@@ -130,6 +130,28 @@ app.post("/api/add", async (req, res) => {
   }
 });
 
+app.delete("/api/delete/:id", async (req, res) => {
+  const recordId = req.params.id;
+
+  try {
+    const response = await fetch(
+      `https://api.airtable.com/v0/${process.env.AIRTABLE_BASE_ID}/${process.env.AIRTABLE_TABLE_NAME}/${recordId}`,
+      {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${process.env.AIRTABLE_API_KEY}`,
+        }
+      }
+    );
+
+    const data = await response.json();
+    res.json(data);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: err.message });
+  }
+});
+
 // Rota /hubs
 app.get('/hubs', (req, res) => {
   res.status(200).send();
