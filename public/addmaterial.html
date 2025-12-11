@@ -115,7 +115,7 @@
     .submit-btn:hover {
       background-color: #1F6390;
     }
-  </style>
+  </style>  
 </head>
 <body>
 
@@ -123,20 +123,28 @@
   <nav class="navbar">
     <div class="brand">BIMatrix</div>
     <ul>
-      <li><a href="Airtable3.html">Materiais</a></li>
-      <li><a href="main.html">Nome, Empresa</a></li>
+      <li><a href="Airtable3.html">Voltar</a></li>
     </ul>
   </nav>
 
   <!-- Form Container -->
   <div class="container">
-    <h3>Adicionar novo registro</h3>
+    <h2>Adicionar novo registro</h2>
     <form id="addForm">
-      <input type="text" id="name" placeholder="Nome" required>
-      <input type="text" id="dimensions" placeholder="Dimensões" required>
-      <input type="text" id="material" placeholder="Material" required>
-      <input type="number" id="price" placeholder="Preço" required step="0.01">
-      <button type="submit">Adicionar</button>
+      <div class="form-group">
+        <input type="text" id="name" placeholder="Nome" required>
+      </div>
+      <div class="form-group">
+        <input type="text" id="dimensions" placeholder="Dimensões" required>
+      </div>
+      <div class="form-group">
+        <input type="text" id="material" placeholder="Material" required>
+      </div>
+      <div class="form-group">
+        <input type="number" id="price" placeholder="Preço" required step="0.01">
+      </div>
+
+      <button class="submit-btn" type="submit">Adicionar</button>
     </form>
   </div>
 

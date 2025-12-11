@@ -447,30 +447,16 @@
   </script>
 
   <script>
-    const gridBtn = document.getElementById('gridBtn');
-    const tableBtn = document.getElementById('tableBtn');
-    const gridView = document.getElementById('gridView');
-    const tableView = document.getElementById('tableView');
-
-    gridBtn.onclick = () => {
-      gridView.style.display = "grid";
-      tableView.style.display = "none";
-      gridBtn.classList.add("active");
-      tableBtn.classList.remove("active");
-    };
-
-    tableBtn.onclick = () => {
-      gridView.style.display = "none";
-      tableView.style.display = "block";
-      tableBtn.classList.add("active");
-      gridBtn.classList.remove("active");
-    };
-
+  document.addEventListener("DOMContentLoaded", () => {
     const sidebar = document.getElementById("sidebar");
     const sidebarTitle = document.getElementById("sidebarTitle");
     const sidebarBody = document.getElementById("sidebarBody");
+    const showSidebarBtn = document.getElementById("showNameSidebar");
+    const closeSidebarBtn = document.getElementById("closeSidebar");
 
-    document.getElementById("showNameSidebar").addEventListener("click", () => {
+    // Abre a sidebar
+    showSidebarBtn.addEventListener("click", (e) => {
+      e.preventDefault(); // evita que a página role para o topo
       sidebarTitle.textContent = "Perfil";
       sidebarBody.innerHTML = `
         <p><strong>Nome:</strong> João Silva</p>
@@ -480,32 +466,34 @@
       sidebar.classList.add("open");
     });
 
-    document.getElementById("closeSidebar").addEventListener("click", () => {
+    // Fecha a sidebar
+    closeSidebarBtn.addEventListener("click", () => {
       sidebar.classList.remove("open");
     });
+  });
   </script>
 
   <script>
-  const urnLink = document.querySelector('a[href=""][data-action="urn"]');
-  const modal = document.getElementById("urnModal");
-  const closeBtn = document.querySelector(".modal .close");
+    const urnLink = document.querySelector('a[href=""][data-action="urn"]');
+    const modal = document.getElementById("urnModal");
+    const closeBtn = document.querySelector(".modal .close");
 
-  // abrir modal ao clicar em URN
-  urnLink.addEventListener("click", (e) => {
-    e.preventDefault();
-    modal.style.display = "block";
-  });
+    // abrir modal ao clicar em URN
+    urnLink.addEventListener("click", (e) => {
+      e.preventDefault();
+      modal.style.display = "block";
+    });
 
-  // fechar no X
-  closeBtn.addEventListener("click", () => {
-    modal.style.display = "none";
-  });
+    // fechar no X
+    closeBtn.addEventListener("click", () => {
+      modal.style.display = "none";
+    });
 
-  // fechar ao clicar fora
-  window.addEventListener("click", (e) => {
-    if (e.target == modal) modal.style.display = "none";
-  });
-</script>
+    // fechar ao clicar fora
+    window.addEventListener("click", (e) => {
+      if (e.target == modal) modal.style.display = "none";
+    });
+  </script>
 
 </body>
 </html>
