@@ -225,9 +225,9 @@
 
     .toggle-btn2 button {
       padding: 0.5rem 1rem;
-      border: 1px solid #e285a7;
+      border: 1px solid #229b00;
       background-color: white;
-      color: #e285a7;
+      color: #229b00;
       cursor: pointer;
       border-radius: 0.3rem;
       transition: all 0.2s;
@@ -235,13 +235,13 @@
     }
 
     .toggle-btn2 button.active {
-      background-color: #e285a7;
+      background-color: #229b00;
       color: white;
     }
 
     /* Optional: Add hover effect */
     .toggle-btn2 button:hover {
-      background-color: #e285a7;
+      background-color: #229b00;
       color: white;
   }
 
@@ -340,8 +340,6 @@
     <div class="left-panel">
     <!-- Toggle -->
       <div class="toggle-btn">
-        <button id="gridBtn" class="active">Grid</button>
-        <button id="tableBtn">Tabela</button>
         <div class="toggle-btn2">
           <a href="addMaterial.html">
             <button id="addMaterialBtn">Add Material</button>
@@ -356,21 +354,7 @@
         </div>
       </div>
 
-        <!-- Grid -->
-      <div id="gridView" class="grid">
-        <div class="card">
-          <img src="https://via.placeholder.com/80" alt="Produto 1">
-          <h4>Material 1</h4>
-          <p>Empresa A</p>
-        </div>
-        <div class="card">
-          <img src="https://via.placeholder.com/80" alt="Produto 2">
-          <h4>Material 2</h4>
-          <p>Empresa B</p>
-        </div>
-      </div>
-
-      <table id="tableView" style="display: none;">
+      <table id="tableView">
         <thead>
           <tr>
             <th>Name</th>
@@ -379,7 +363,20 @@
         </thead>
         <tbody></tbody>
       </table>
+    </div>
 
+    <div class="right-panel">
+      <div id="controls">
+        <input type="text" id="modelUrn" placeholder="Cole aqui o Version URN" />
+        <button id="loadModelBtn">Load Model</button>
+      </div>
+
+      <div id="viewerContainer"></div>
+        <link rel="stylesheet" href="viewer.css">
+        <script src="viewer.js"></script>
+      </div>
+    </div>  
+  </div>
 
   <script>
     fetch('/api/airtable')
