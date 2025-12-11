@@ -81,80 +81,6 @@ app.get('/auth/token', async (req, res) => {
         scope: 'data:read data:write bucket:create bucket:read'
       })
     });
-
-app.get("/api/tasks", async (req, res) => {
-  const response = await fetch("https://api.airtable.com/v0/appE4Opk24OpOIfQy/tbl8RHXKsZ2OGcn3f", {
-    headers: {
-      Authorization: `Bearer ${process.env.AIRTABLE_TOKEN}`
-    }
-  });
-  const data = await response.json();
-  res.json(data);
-});
-
-
-// Update a record
-app.post("/api/update", async (req, res) => {
-  const { recordId, fields } = req.body;
-  try {
-    const response = await fetch(
-      `https://api.airtable.com/v0/appE4Opk24OpOIfQy/tbl8RHXKsZ2OGcn3f/${recordId}`,
-      {
-        method: "PATCH",
-        headers: {
-          Authorization: `Bearer ${process.env.AIRTABLE_TOKEN}`,
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ fields })
-      }
-    );
-    const data = await response.json();
-    res.json(data);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
-
-app.post("/api/add", async (req, res) => {
-  const fields = req.body; // we accept a dynamic object
-  try {
-    const response = await fetch(
-      `https://api.airtable.com/v0/appE4Opk24OpOIfQy/tbl8RHXKsZ2OGcn3f`,
-      {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${process.env.AIRTABLE_TOKEN}`,
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ fields })
-      }
-    );
-    const data = await response.json();
-    res.json(data);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
-
-// Update an existing record
-app.post("/api/edit", async (req, res) => {
-  const { recordId, fields } = req.body;
-  const response = await fetch(
-    `https://api.airtable.com/v0/appE4Opk24OpOIfQy/tbl8RHXKsZ2OGcn3f/${recordId}`,
-    {
-      method: "PATCH",
-      headers: {
-        Authorization: `Bearer ${process.env.AIRTABLE_TOKEN}`,
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({ fields })
-    }
-  );
-  const data = await response.json();
-  res.json(data);
-});
-    
-
     const data = await response.json();
     res.json(data);
   } catch (error) {
@@ -163,14 +89,51 @@ app.post("/api/edit", async (req, res) => {
   }
 });
 
+app.get('/api/airtable', async (req, res) => {
+  const url = `https://api.airtable.com/v0/${process.env.AIRTABLE_BASE_ID}/${process.env.AIRTABLE_TABLE_NAME}`;
+  
+  try {
+    const response = await fetch(url, {
+      headers: { Authorization: `Bearer ${process.env.AIRTABLE_API_KEY}` }
+    });
+
+    const text = await response.text(); // <- log the raw response
+    console.log(text);
+
+    res.send(text);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Server Error');
+  }
+});
+
+
+app.post("/api/add", async (req, res) => {
+  const fields = req.body; // objeto com os campos do registro
+  try {
+    const response = await fetch(
+      `https://api.airtable.com/v0/${process.env.AIRTABLE_BASE_ID}/${process.env.AIRTABLE_TABLE_NAME}`,
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${process.env.AIRTABLE_API_KEY}`,
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ fields })
+      }
+    );
+    const data = await response.json();
+    res.json(data);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: err.message });
+  }
+});
+
 // Rota /hubs
 app.get('/hubs', (req, res) => {
   res.status(200).send();
 });
-
-
-
-
 
 // --- Montagem das Rotas Específicas ---
 

@@ -339,81 +339,77 @@
 
     <div class="left-panel">
     <!-- Toggle -->
-    <div class="toggle-btn">
-      <button id="gridBtn" class="active">Grid</button>
-      <button id="tableBtn">Tabela</button>
-      <div class="toggle-btn2">
-        <a href="addMaterial.html">
-          <button id="addMaterialBtn">Add Material</button>
-        </a>
+      <div class="toggle-btn">
+        <button id="gridBtn" class="active">Grid</button>
+        <button id="tableBtn">Tabela</button>
+        <div class="toggle-btn2">
+          <a href="addMaterial.html">
+            <button id="addMaterialBtn">Add Material</button>
+          </a>
+        </div>
+        <div class="toggle-btn3">
+          <button id="deleteProductBtn">Delete</button>
+        </div>
+        <div class="toggle-btn4">
+          <button>Filter</button>
+          <button>Search</button>
+        </div>
       </div>
-      <div class="toggle-btn3">
-      <button id="deleteProductBtn">Delete</button>
-      </div>
-      <div class="toggle-btn4">
-      <button>Filter</button>
-      <button>Search</button>
-      </div>
-    </div>
 
         <!-- Grid -->
-    <div id="gridView" class="grid">
-      <div class="card">
-        <img src="https://via.placeholder.com/80" alt="Produto 1">
-        <h4>Material 1</h4>
-        <p>Empresa A</p>
+      <div id="gridView" class="grid">
+        <div class="card">
+          <img src="https://via.placeholder.com/80" alt="Produto 1">
+          <h4>Material 1</h4>
+          <p>Empresa A</p>
+        </div>
+        <div class="card">
+          <img src="https://via.placeholder.com/80" alt="Produto 2">
+          <h4>Material 2</h4>
+          <p>Empresa B</p>
+        </div>
       </div>
-      <div class="card">
-        <img src="https://via.placeholder.com/80" alt="Produto 2">
-        <h4>Material 2</h4>
-        <p>Empresa B</p>
-      </div>
-    </div>
 
-     <!-- Tabela -->
-    <div id="tableView" style="display:none;">
-      <table>
+      <table id="tableView" style="display: none;">
         <thead>
           <tr>
-            <th>Produto</th>
-            <th>Nome</th>
-            <th>Empresa</th>
-            <th>Categoria</th>
+            <th>Name</th>
+            <th>Email</th>
           </tr>
         </thead>
-        <tbody>
-          <tr>
-            <td>Produto 1</td>
-            <td>Nome 1</td>
-            <td>Empresa A</td>
-            <td>Matéria X</td>
-          </tr>
-          <tr>
-            <td>Produto 2</td>
-            <td>Nome 2</td>
-            <td>Empresa B</td>
-            <td>Matéria Y</td>
-          </tr>
-          <!-- Mais linhas -->
-        </tbody>
+        <tbody></tbody>
       </table>
-    </div>
-  </div>
-
-  <a href="https://airtable.com/invite/l?inviteId=invCTiVqDFMAUL7aX&inviteToken=09faaa6aef5d350a32876f35065d3651fd55f66f1b530659cf787754616f59c4&utm_medium=email&utm_source=product_team&utm_content=transactional-alerts" class="fixed-icon" target="_blank">
-    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQelaD7G6XIdlUTV3uvwT9hwmb1_ZFyhzqKjA&s" alt="Icon" width="40">
-  </a>
 
     <div class="right-panel">
-    <div id="controls">
+      <div id="controls">
         <input type="text" id="modelUrn" placeholder="Cole aqui o Version URN" />
         <button id="loadModelBtn">Load Model</button>
-    </div>
+      </div>
 
-    <div id="viewerContainer"></div>
-    <link rel="stylesheet" href="viewer.css">
-    <script src="viewer.js"></script>
-    </div>
+      <div id="viewerContainer"></div>
+        <link rel="stylesheet" href="viewer.css">
+        <script src="viewer.js"></script>
+      </div>
+    </div>  
+  </div>
+  
+
+  <script>
+    fetch('/api/airtable')
+      .then(res => res.json())
+      .then(data => {
+        const tbody = document.querySelector('#tableview tbody');
+        data.records.forEach(record => {
+          const tr = document.createElement('tr');
+          tr.innerHTML = `
+            <td>${record.fields.Name || ''}</td>
+            <td>${record.fields.Email || ''}</td>
+          `;
+          tbody.appendChild(tr);
+        });
+      })
+      .catch(err => console.error(err));
+    </script>
 
       <script>
     const gridBtn = document.getElementById('gridBtn');

@@ -123,44 +123,50 @@
   <nav class="navbar">
     <div class="brand">BIMatrix</div>
     <ul>
-      <li><a href="indexMateriais.html">Materiais</a></li>
+      <li><a href="Airtable3.html">Materiais</a></li>
       <li><a href="main.html">Nome, Empresa</a></li>
     </ul>
   </nav>
 
   <!-- Form Container -->
   <div class="container">
-    <h2>Add New Material</h2>
-
-    <form>
-      <div class="form-group">
-        <label for="pname">Material Name</label>
-        <input type="text" id="pname" placeholder="Enter Material name" required>
-      </div>
-
-      <div class="form-group">
-        <label for="company">Company</label>
-        <input type="text" id="company" placeholder="Company name" required>
-      </div>
-
-      <div class="form-group">
-        <label for="category">Category</label>
-        <select id="category" required>
-          <option value="">Select category</option>
-          <option>Matéria X</option>
-          <option>Matéria Y</option>
-          <option>Matéria Z</option>
-        </select>
-      </div>
-
-      <div class="form-group">
-        <label for="desc">Description (optional)</label>
-        <textarea id="desc" rows="4" placeholder="Short description"></textarea>
-      </div>
-
-      <button class="submit-btn" type="submit">Save Product</button>
+    <h3>Adicionar novo registro</h3>
+    <form id="addForm">
+      <input type="text" id="name" placeholder="Name" required>
+      <input type="email" id="email" placeholder="Email" required>
+      <button type="submit-btn">Adicionar</button>
     </form>
   </div>
+
+<script>
+const form = document.getElementById('addForm');
+
+form.addEventListener('submit', async (e) => {
+  e.preventDefault();
+
+  const name = document.getElementById('name').value;
+  const email = document.getElementById('email').value;
+
+  try {
+    const response = await fetch('/api/add', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ Name: name, Email: email })
+    });
+
+    const data = await response.json();
+    console.log('Registro adicionado:', data);
+
+    // Redireciona ou mostra mensagem de sucesso
+    alert('Registro adicionado!');
+    form.reset();
+  } catch (err) {
+    console.error('Erro ao adicionar registro:', err);
+  }
+});
+</script>
+
+
 
 </body>
 </html>
