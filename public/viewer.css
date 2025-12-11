@@ -49,6 +49,7 @@ html, body {
   padding: 10px;
   background-color: #f4f4f4;
   border-bottom: 1px solid #ddd;
+  left: 20px;
 }
 
 #viewerContainer {

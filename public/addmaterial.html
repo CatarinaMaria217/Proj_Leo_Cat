@@ -132,9 +132,11 @@
   <div class="container">
     <h3>Adicionar novo registro</h3>
     <form id="addForm">
-      <input type="text" id="name" placeholder="Name" required>
-      <input type="email" id="email" placeholder="Email" required>
-      <button type="submit-btn">Adicionar</button>
+      <input type="text" id="name" placeholder="Nome" required>
+      <input type="text" id="dimensions" placeholder="Dimensões" required>
+      <input type="text" id="material" placeholder="Material" required>
+      <input type="number" id="price" placeholder="Preço" required step="0.01">
+      <button type="submit">Adicionar</button>
     </form>
   </div>
 
@@ -145,13 +147,15 @@ form.addEventListener('submit', async (e) => {
   e.preventDefault();
 
   const name = document.getElementById('name').value;
-  const email = document.getElementById('email').value;
+  const dimensions = document.getElementById('dimensions').value;
+  const material = document.getElementById('material').value;
+  const price = parseFloat(document.getElementById('price').value);
 
   try {
     const response = await fetch('/api/add', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ Name: name, Email: email })
+      body: JSON.stringify({ Nome: name, Dimensões: dimensions, Material: material, Preço: price,})
     });
 
     const data = await response.json();
