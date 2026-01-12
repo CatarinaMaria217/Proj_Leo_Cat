@@ -63,7 +63,7 @@
         <input type="text" id="username" placeholder="Utilizador">
         <input type="password" id="password" placeholder="Senha">
         <button onclick="login()">Entrar</button>
-        <p>Ainda não tem uma conta? <a href="register.html">Registar</a></p>
+        <p>Ainda não tem uma conta? <a href="../html/register.html">Registar</a></p>
     </div>
 
     <script>
@@ -78,7 +78,7 @@
                 alert("Login bem-sucedido!");
                 localStorage.setItem("userLogged", "true");
                 localStorage.setItem("username", user);
-                window.location.href = "Airtable3.html"; // Redireciona para a página de conteúdo
+                window.location.href = "../html/Airtable3.html"; // Redireciona para a página de conteúdo
             } else {
                 document.getElementById("message").innerText = "Usuário ou senha incorretos!";
             }
