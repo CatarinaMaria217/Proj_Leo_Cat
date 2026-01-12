@@ -4,118 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Add Product - Portal Empresarial</title>
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: "Segoe UI", Arial, sans-serif;
-    }
-
-    body {
-      background-color: #F4F6F7;
-      color: #2C3E50;
-    }
-
-    /* Navbar */
-    .navbar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 1rem 2rem;
-      background-color: #2C3E50;
-      color: white;
-      position: sticky;
-      top: 0;
-      z-index: 1000;
-    }
-
-    .navbar .brand {
-      font-weight: bold;
-      font-size: 1.25rem;
-      color: white;
-    }
-
-    .navbar ul {
-      display: flex;
-      gap: 1.5rem;
-      list-style: none;
-    }
-
-    .navbar a {
-      text-decoration: none;
-      color: #ECF0F1;
-      font-weight: 500;
-      transition: opacity 0.2s;
-    }
-
-    .navbar a:hover {
-      opacity: 0.7;
-    }
-
-    /* Page container */
-    .container {
-      max-width: 600px;
-      margin: 3rem auto;
-      background: white;
-      padding: 2rem;
-      border-radius: 0.5rem;
-      border: 1px solid #D5D8DC;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-    }
-
-    h2 {
-      text-align: center;
-      margin-bottom: 1.5rem;
-      color: #2C3E50;
-    }
-
-    /* Form */
-    .form-group {
-      margin-bottom: 1.2rem;
-    }
-
-    label {
-      display: block;
-      font-weight: 600;
-      margin-bottom: 0.3rem;
-    }
-
-    input, select, textarea {
-      width: 100%;
-      padding: 0.6rem;
-      border: 1px solid #BDC3C7;
-      border-radius: 0.3rem;
-      font-size: 1rem;
-      background-color: #FAFAFA;
-      transition: border 0.2s;
-    }
-
-    input:focus, select:focus, textarea:focus {
-      border-color: #2980B9;
-      outline: none;
-      background-color: #FFFFFF;
-    }
-
-    /* Submit button styled like Grid/Table buttons */
-    .submit-btn {
-      width: 100%;
-      padding: 0.7rem;
-      border: 1px solid #2980B9;
-      background-color: #2980B9;
-      color: white;
-      font-weight: 600;
-      cursor: pointer;
-      border-radius: 0.3rem;
-      transition: background 0.2s;
-      font-size: 1rem;
-      margin-top: 1rem;
-    }
-
-    .submit-btn:hover {
-      background-color: #1F6390;
-    }
-  </style>  
+  <link rel="stylesheet" href="../css/addmaterial.css">
 </head>
 <body>
 
@@ -148,37 +37,7 @@
     </form>
   </div>
 
-<script>
-const form = document.getElementById('addForm');
-
-form.addEventListener('submit', async (e) => {
-  e.preventDefault();
-
-  const name = document.getElementById('name').value;
-  const dimensions = document.getElementById('dimensions').value;
-  const material = document.getElementById('material').value;
-  const price = parseFloat(document.getElementById('price').value);
-
-  try {
-    const response = await fetch('/api/add', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ Nome: name, Dimensões: dimensions, Material: material, Preço: price,})
-    });
-
-    const data = await response.json();
-    console.log('Registro adicionado:', data);
-
-    // Redireciona ou mostra mensagem de sucesso
-    alert('Registro adicionado!');
-    form.reset();
-  } catch (err) {
-    console.error('Erro ao adicionar registro:', err);
-  }
-});
-</script>
-
-
+<script src="../js/addmaterial.js"></script>
 
 </body>
 </html>
