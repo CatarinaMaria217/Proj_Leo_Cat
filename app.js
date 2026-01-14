@@ -1,6 +1,7 @@
 // Configures Express app, middleware, and routes
 const express = require('express');
 const app = express();
+const ExcelJS = require("exceljs");
 
 // --- Importar Módulos ---
 const forgeRoutes = require('./src/routes/forgeRoutes');
@@ -184,6 +185,81 @@ app.delete("/api/delete/:id", async (req, res) => {
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: err.message });
+  }
+});
+
+app.get("/api/export-excel", async (req, res) => {
+  const { nome, material, precoMin, sortField, sortDir } = req.query;
+
+  let formulas = [];
+
+  if (nome) formulas.push(`FIND("${nome}", {Nome})`);
+  if (material) formulas.push(`{Material} = "${material}"`);
+  if (precoMin) formulas.push(`{Preço} >= ${precoMin}`);
+
+  const filterByFormula =
+    formulas.length > 0 ? `AND(${formulas.join(",")})` : null;
+
+  const url = new URL(
+    `https://api.airtable.com/v0/${process.env.AIRTABLE_BASE_ID}/${process.env.AIRTABLE_TABLE_NAME}`
+  );
+
+  if (filterByFormula) {
+    url.searchParams.append("filterByFormula", filterByFormula);
+  }
+
+  if (sortField) {
+    url.searchParams.append("sort[0][field]", sortField);
+    url.searchParams.append(
+      "sort[0][direction]",
+      sortDir === "desc" ? "desc" : "asc"
+    );
+  }
+
+  try {
+    const response = await fetch(url.toString(), {
+      headers: {
+        Authorization: `Bearer ${process.env.AIRTABLE_API_KEY}`
+      }
+    });
+
+    const data = await response.json();
+
+    // 🔹 Criar Excel
+    const workbook = new ExcelJS.Workbook();
+    const sheet = workbook.addWorksheet("Produtos");
+
+    sheet.columns = [
+      { header: "Nome", key: "nome", width: 30 },
+      { header: "Dimensões", key: "dimensoes", width: 20 },
+      { header: "Material", key: "material", width: 20 },
+      { header: "Preço", key: "preco", width: 15 }
+    ];
+
+    data.records.forEach(record => {
+      sheet.addRow({
+        nome: record.fields["Nome"] || "",
+        dimensoes: record.fields["Dimensões"] || "",
+        material: record.fields["Material"] || "",
+        preco: record.fields["Preço"] || ""
+      });
+    });
+
+    res.setHeader(
+      "Content-Type",
+      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    );
+    res.setHeader(
+      "Content-Disposition",
+      "attachment; filename=listaProdutos.xlsx"
+    );
+
+    await workbook.xlsx.write(res);
+    res.end();
+
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Erro ao gerar Excel");
   }
 });
 

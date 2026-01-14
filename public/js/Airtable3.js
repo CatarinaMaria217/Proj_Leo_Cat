@@ -193,3 +193,25 @@ window.addEventListener("click", e => {
    4️⃣ LOAD INICIAL
    ========================= */
 loadAirtable();
+
+const exportBtn = document.getElementById("exportExcel");
+
+if (exportBtn) {
+  exportBtn.addEventListener("click", () => {
+    const params = new URLSearchParams();
+
+    const nome = document.getElementById("filterNome")?.value;
+    const material = document.getElementById("filterMaterial")?.value;
+    const precoMin = document.getElementById("filterPreco")?.value;
+
+    if (nome) params.append("nome", nome);
+    if (material) params.append("material", material);
+    if (precoMin) params.append("precoMin", precoMin);
+
+    if (currentSortField) params.append("sortField", currentSortField);
+    if (currentSortDir) params.append("sortDir", currentSortDir);
+
+    // 🔽 abre download
+    window.location.href = `/api/export-excel?${params.toString()}`;
+  });
+}
