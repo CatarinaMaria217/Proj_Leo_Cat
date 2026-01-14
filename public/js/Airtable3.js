@@ -1,3 +1,8 @@
+/* =========================
+   0️⃣ ESTADO GLOBAL (SORT)
+   ========================= */
+let currentSortField = null;
+let currentSortDir = "asc";
 
 /* =========================
    1️⃣ FUNÇÃO PRINCIPAL
@@ -6,9 +11,14 @@ async function loadAirtable(filters = {}) {
   try {
     const params = new URLSearchParams();
 
+    // 🔹 FILTROS
     if (filters.nome) params.append("nome", filters.nome);
     if (filters.material) params.append("material", filters.material);
     if (filters.precoMin) params.append("precoMin", filters.precoMin);
+
+    // 🔹 SORT (NOVO)
+    if (filters.sortField) params.append("sortField", filters.sortField);
+    if (filters.sortDir) params.append("sortDir", filters.sortDir);
 
     const url = `/api/airtable?${params.toString()}`;
 
@@ -32,12 +42,11 @@ async function loadAirtable(filters = {}) {
       tbody.appendChild(tr);
     });
 
-    // DELETE
+    // 🔹 DELETE
     document.querySelectorAll(".delete-btn").forEach(btn => {
       btn.addEventListener("click", async () => {
         const id = btn.dataset.id;
         if (!confirm("Tem certeza que deseja apagar este registro?")) return;
-
         await fetch(`/api/delete/${id}`, { method: "DELETE" });
         loadAirtable(filters);
       });
@@ -53,26 +62,39 @@ async function loadAirtable(filters = {}) {
    ========================= */
 document.addEventListener("DOMContentLoaded", () => {
 
-  /* ---- BOTÕES FILTER / SEARCH ---- */
-  const openFiltersBtn = document.getElementById("openFilters");
-  const openSearchBtn = document.getElementById("openSearch");
-  const filtersPanel = document.getElementById("filtersPanel");
+  /* =========================
+     SORT AO CLICAR NO HEADER
+     ========================= */
+  document.querySelectorAll("#tableView th[data-sort]").forEach(th => {
+    th.addEventListener("click", () => {
+      const field = th.dataset.sort;
 
-  if (openFiltersBtn && filtersPanel) {
-    openFiltersBtn.addEventListener("click", () => {
-      filtersPanel.style.display =
-        filtersPanel.style.display === "none" ? "block" : "none";
+      if (currentSortField === field) {
+        currentSortDir = currentSortDir === "asc" ? "desc" : "asc";
+      } else {
+        currentSortField = field;
+        currentSortDir = "asc";
+      }
+
+      loadAirtable({
+        nome: document.getElementById("filterNome")?.value,
+        material: document.getElementById("filterMaterial")?.value,
+        precoMin: document.getElementById("filterPreco")?.value,
+        sortField: currentSortField,
+        sortDir: currentSortDir
+      });
+
+      // 🔹 indicador visual (opcional)
+      document.querySelectorAll("#tableView th").forEach(h =>
+        h.classList.remove("asc", "desc")
+      );
+      th.classList.add(currentSortDir);
     });
-  }
+  });
 
-  if (openSearchBtn && filtersPanel) {
-    openSearchBtn.addEventListener("click", () => {
-      filtersPanel.style.display = "block";
-      document.getElementById("filterNome")?.focus();
-    });
-  }
-
-  /* ---- APLICAR FILTROS ---- */
+  /* =========================
+     APLICAR FILTROS (MODAL)
+     ========================= */
   const applyFiltersBtn = document.getElementById("applyFilters");
 
   if (applyFiltersBtn) {
@@ -81,23 +103,19 @@ document.addEventListener("DOMContentLoaded", () => {
       const material = document.getElementById("filterMaterial").value;
       const precoMin = document.getElementById("filterPreco").value;
 
-      loadAirtable({ nome, material, precoMin });
-    });
-  }
-
-  /* ---- SEARCH EM TEMPO REAL (opcional mas útil) ---- */
-  const filterNomeInput = document.getElementById("filterNome");
-  if (filterNomeInput) {
-    filterNomeInput.addEventListener("keyup", () => {
       loadAirtable({
-        nome: filterNomeInput.value,
-        material: document.getElementById("filterMaterial").value,
-        precoMin: document.getElementById("filterPreco").value
+        nome,
+        material,
+        precoMin,
+        sortField: currentSortField,
+        sortDir: currentSortDir
       });
     });
   }
 
-  /* ---- SIDEBAR PERFIL ---- */
+  /* =========================
+     SIDEBAR PERFIL
+     ========================= */
   const sidebar = document.getElementById("sidebar");
   const sidebarTitle = document.getElementById("sidebarTitle");
   const sidebarBody = document.getElementById("sidebarBody");
@@ -123,35 +141,35 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  /* ---- MODAL URN ---- */
+  /* =========================
+     MODAL URN
+     ========================= */
   const urnLink = document.querySelector('a[href=""][data-action="urn"]');
-  const modal = document.getElementById("urnModal");
-  const closeBtn = document.querySelector(".modal .close");
+  const urnModal = document.getElementById("urnModal");
+  const urnClose = urnModal?.querySelector(".close");
 
-  if (urnLink && modal && closeBtn) {
-    urnLink.addEventListener("click", (e) => {
+  if (urnLink && urnModal && urnClose) {
+    urnLink.addEventListener("click", e => {
       e.preventDefault();
-      modal.style.display = "block";
+      urnModal.style.display = "block";
     });
 
-    closeBtn.addEventListener("click", () => {
-      modal.style.display = "none";
+    urnClose.addEventListener("click", () => {
+      urnModal.style.display = "none";
     });
 
-    window.addEventListener("click", (e) => {
-      if (e.target === modal) modal.style.display = "none";
+    window.addEventListener("click", e => {
+      if (e.target === urnModal) urnModal.style.display = "none";
     });
   }
 });
 
 /* =========================
-   3️⃣ LOAD INICIAL
+   3️⃣ MODAL FILTER (BOTÃO)
    ========================= */
-loadAirtable();
-
 const filterBtn = document.getElementById("filterProduct");
 const filterModal = document.getElementById("filterModal");
-const closeFilterModal = filterModal.querySelector(".close");
+const closeFilterModal = filterModal?.querySelector(".close");
 
 if (filterBtn && filterModal) {
   filterBtn.addEventListener("click", () => {
@@ -159,41 +177,19 @@ if (filterBtn && filterModal) {
   });
 }
 
-closeFilterModal.addEventListener("click", () => {
-  filterModal.style.display = "none";
-});
-
-window.addEventListener("click", (e) => {
-  if (e.target === filterModal) {
+if (closeFilterModal) {
+  closeFilterModal.addEventListener("click", () => {
     filterModal.style.display = "none";
-  }
-});
-
-if (toggleGroup && filterModal) {
-  toggleGroup.addEventListener("click", (e) => {
-    if (e.target.tagName !== "BUTTON") return;
-
-    const label = e.target.textContent.trim().toLowerCase();
-
-    if (label === "filter") {
-      filterModal.style.display = "block";
-    }
-
-    if (label === "search") {
-      filterModal.style.display = "block";
-      document.getElementById("filterNome")?.focus();
-    }
   });
 }
 
-const closeBtn = document.querySelector("#filterModal .close");
-
-closeBtn.addEventListener("click", () => {
-  filterModal.style.display = "none";
-});
-
-window.addEventListener("click", (e) => {
+window.addEventListener("click", e => {
   if (e.target === filterModal) {
     filterModal.style.display = "none";
   }
 });
+
+/* =========================
+   4️⃣ LOAD INICIAL
+   ========================= */
+loadAirtable();

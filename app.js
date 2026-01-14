@@ -90,7 +90,7 @@ app.get('/auth/token', async (req, res) => {
 });
 
 app.get('/api/airtable', async (req, res) => {
-    const { nome, material, precoMin } = req.query;
+  const { nome, material, precoMin, sortField, sortDir } = req.query;
 
   let formulas = [];
 
@@ -107,31 +107,41 @@ app.get('/api/airtable', async (req, res) => {
   }
 
   const filterByFormula =
-    formulas.length > 0 ? `AND(${formulas.join(",")})` : "";
+    formulas.length > 0 ? `AND(${formulas.join(",")})` : null;
 
   const url = new URL(
     `https://api.airtable.com/v0/${process.env.AIRTABLE_BASE_ID}/${process.env.AIRTABLE_TABLE_NAME}`
   );
 
+  // 🔹 filtros
   if (filterByFormula) {
     url.searchParams.append("filterByFormula", filterByFormula);
   }
-  
+
+  // 🔹 SORT (novo)
+  if (sortField) {
+    url.searchParams.append("sort[0][field]", sortField);
+    url.searchParams.append(
+      "sort[0][direction]",
+      sortDir === "desc" ? "desc" : "asc"
+    );
+  }
+
   try {
-    const response = await fetch(url, {
-      headers: { Authorization: `Bearer ${process.env.AIRTABLE_API_KEY}` }
+    const response = await fetch(url.toString(), {
+      headers: {
+        Authorization: `Bearer ${process.env.AIRTABLE_API_KEY}`
+      }
     });
 
-    const text = await response.text(); // <- log the raw response
-    console.log(text);
+    const data = await response.json(); // 👈 JSON, não text
+    res.json(data);
 
-    res.send(text);
   } catch (err) {
     console.error(err);
     res.status(500).send('Server Error');
   }
 });
-
 
 app.post("/api/add", async (req, res) => {
   const fields = req.body; // objeto com os campos do registro

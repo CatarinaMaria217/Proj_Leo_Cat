@@ -293,3 +293,15 @@
     border-radius: 4px;
     font-size: 0.9rem;
   }
+
+  th[data-sort] {
+    cursor: pointer;
+  }
+
+  th[data-sort].asc::after {
+    content: " ▲";
+  }
+
+  th[data-sort].desc::after {
+    content: " ▼";
+  }
