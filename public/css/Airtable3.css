@@ -208,7 +208,7 @@
       margin-left: 2rem; /* space between Tabela and Add Product */
     }
 
-  .toggle-btn4 button {
+    .toggle-btn4 button {
       padding: 0.5rem 1rem;
       border: 1px solid #000000;
       background-color: white;
@@ -284,4 +284,12 @@
     font-size: 22px;
     font-weight: bold;
     cursor: pointer;
+  }
+
+  .modal-content input,
+  .modal-content select {
+    padding: 0.5rem;
+    border: 1px solid #BDC3C7;
+    border-radius: 4px;
+    font-size: 0.9rem;
   }

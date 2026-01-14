@@ -90,7 +90,32 @@ app.get('/auth/token', async (req, res) => {
 });
 
 app.get('/api/airtable', async (req, res) => {
-  const url = `https://api.airtable.com/v0/${process.env.AIRTABLE_BASE_ID}/${process.env.AIRTABLE_TABLE_NAME}`;
+    const { nome, material, precoMin } = req.query;
+
+  let formulas = [];
+
+  if (nome) {
+    formulas.push(`FIND("${nome}", {Nome})`);
+  }
+
+  if (material) {
+    formulas.push(`{Material} = "${material}"`);
+  }
+
+  if (precoMin) {
+    formulas.push(`{Preço} >= ${precoMin}`);
+  }
+
+  const filterByFormula =
+    formulas.length > 0 ? `AND(${formulas.join(",")})` : "";
+
+  const url = new URL(
+    `https://api.airtable.com/v0/${process.env.AIRTABLE_BASE_ID}/${process.env.AIRTABLE_TABLE_NAME}`
+  );
+
+  if (filterByFormula) {
+    url.searchParams.append("filterByFormula", filterByFormula);
+  }
   
   try {
     const response = await fetch(url, {

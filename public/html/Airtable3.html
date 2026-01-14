@@ -45,8 +45,8 @@
           </a>
         </div>
         <div class="toggle-btn4">
-          <button>Filter</button>
-          <button>Search</button>
+          <button id="filterProduct">Filter</button>
+          <button id="sortProduct">Sort</button>
         </div>
       </div>
 
@@ -84,6 +84,26 @@
 
     </div>
   </div>
+
+  <div id="filterModal" class="modal">
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <h3 style="margin-bottom:1rem;">Filtrar produtos</h3>
+
+    <input id="filterNome" placeholder="Pesquisar nome" style="width:100%; margin-bottom:.75rem;">
+    
+    <select id="filterMaterial" style="width:100%; margin-bottom:.75rem;">
+      <option value="">Todos os materiais</option>
+      <option value="Plástico">Plástico</option>
+      <option value="Metal">Metal</option>
+      <option value="Vidro e Metal">Vidro e Metal</option>
+    </select>
+
+    <input id="filterPreco" type="number" placeholder="Preço mínimo" style="width:100%; margin-bottom:1rem;">
+
+    <button id="applyFilters" style="width:100%;">Aplicar filtros</button>
+  </div>
+</div>
 
 <script src="../js/Airtable3.js"></script>
 </body>
